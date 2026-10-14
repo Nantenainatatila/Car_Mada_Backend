@@ -4,8 +4,16 @@ const path = require('path');
 const multer = require('multer');
 
 // Dossier où les images sont enregistrées : backend/uploads
-const dossier = path.join(__dirname, '..', '..', 'uploads');
-fs.mkdirSync(dossier, { recursive: true });
+// Sur Vercel, seul /tmp est inscriptible (et temporaire)
+const dossier = process.env.VERCEL
+  ? '/tmp/uploads'
+  : path.join(__dirname, '..', '..', 'uploads');
+
+try {
+  fs.mkdirSync(dossier, { recursive: true });
+} catch (e) {
+  console.error('Impossible de créer le dossier uploads :', e.message);
+}
 
 const storage = multer.diskStorage({
   destination: dossier,
