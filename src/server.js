@@ -4,7 +4,29 @@ const path = require('path');
 const express = require('express');
 const cors = require('cors');
 
+
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://carfrontend-two.vercel.app',
+];
 const app = express();
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Autoriser les requêtes sans origine, par exemple certains clients API.
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error('Origine non autorisée par CORS'));
+  },
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+
+
 
 app.use(cors());
 app.use(express.json());
