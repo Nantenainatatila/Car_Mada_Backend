@@ -5,7 +5,7 @@ const express = require('express');
 const cors = require('cors');
 
 
-module.exports = app; // Vercel utilise l'app exportée
+ // Vercel utilise l'app exportée
 
 const allowedOrigins = [
   'http://localhost:5173',
@@ -70,3 +70,4 @@ if (!process.env.VERCEL) {
   app.listen(PORT, () => console.log(`API prête sur http://localhost:${PORT}`));
 }
 
+module.exports = app;
