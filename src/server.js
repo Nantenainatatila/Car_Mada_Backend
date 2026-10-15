@@ -7,15 +7,16 @@ const cors = require('cors');
 
  // Vercel utilise l'app exportée
 
+;
+const app = express();
+
 const allowedOrigins = [
   'http://localhost:5173',
   'https://carfrontend-two.vercel.app',
 ];
-const app = express();
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Autoriser les requêtes sans origine, par exemple certains clients API.
     if (!origin || allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
@@ -32,8 +33,7 @@ app.use(cors({
 app.use(cors());
 app.use(express.json());
 
-// Les images envoyées sont accessibles via http://localhost:5000/uploads/nom-image.jpg
-app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
+
 
 // Les routes de l'API
 app.use('/api/auth', require('./routes/auth'));
@@ -44,6 +44,7 @@ app.use('/api/admin', require('./routes/admin'));
 
 // Test rapide : http://localhost:5000/api/health
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
+app.use('/api/images', require('./routes/images'));
 
 // Gestion des erreurs (toute erreur non prévue arrive ici)
 app.use((err, req, res, next) => {
